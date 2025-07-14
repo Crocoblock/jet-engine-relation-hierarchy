@@ -22,6 +22,9 @@ class Hierarchy_Filters {
 		add_filter( 'jet-engine/relations/relation-filter-keys', array( $this, 'add_relation_filter_keys' ) );
 		add_filter( 'jet-engine/relations/custom-relation-args', array( $this, 'register_custom_relation_args' ), 10, 4 );
 
+		// Indexer common
+		add_filter( 'jet-engine/relations/custom-indexer-rel-ids', array( $this, 'get_custom_indexer_rel_ids' ), 10, 5 );
+
 		add_filter( 'jet-engine/relations/dynamic-queries', array( $this, 'add_dynamic_queries' ) );
 	}
 
@@ -46,6 +49,16 @@ class Hierarchy_Filters {
 		}
 
 		return $args_data;
+	}
+
+	public function get_custom_indexer_rel_ids( $rel_ids, $rel_type, $relation, $value, $type ) {
+		$data_result = $this->get_custom_relation_data( $rel_type, $relation, $value );
+
+		if ( ! empty( $data_result['rel_ids'] ) ) {
+			$rel_ids = $data_result['rel_ids'];
+		}
+
+		return $rel_ids;
 	}
 
 	public function get_custom_relation_data( $type, $relation, $value ) {
